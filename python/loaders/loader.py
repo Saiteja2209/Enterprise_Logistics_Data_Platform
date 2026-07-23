@@ -16,8 +16,8 @@ def load_tables():
         sql = f"""
         COPY INTO RAW.{table}
         FROM @UTIL.LOGISTICS_STAGE/{file.name}.gz
-        FILE_FORMAT=(FORMAT_NAME='UTIL.CSV_FORMAT', ERROR_ON_COLUMN_COUNT_MISMATCH=FALSE)
-        ON_ERROR = 'CONTINUE';
+        FILE_FORMAT=(FORMAT_NAME='UTIL.CSV_FORMAT', SKIP_HEADER=0, PARSE_HEADER=TRUE, ERROR_ON_COLUMN_COUNT_MISMATCH=FALSE)
+        MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;
         """
 
         logger.info(f"Loading {table}")
