@@ -14,7 +14,9 @@ def upload_files():
     logger.info(f"Found {len(files)} CSV files.")
 
     for file in files:
+
         try:
+
             sql = f"""
             PUT 'file://{file.as_posix()}'
             @UTIL.LOGISTICS_STAGE
@@ -32,4 +34,4 @@ def upload_files():
             logger.error(e)
 
     cur.close()
-    conn.close()
+    conn.close()
