@@ -27,7 +27,9 @@ def validate():
 
         
 
-        logger.info(f"{table} contains {count} rows")
+        msg = f"{table} contains {count} rows"
+        print(msg)
+        logger.info(msg)
 
     cur.close()
     conn.close()
