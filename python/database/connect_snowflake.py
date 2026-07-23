@@ -1,5 +1,5 @@
 import snowflake.connector
-import config
+import config.config as config
 
 def get_connection():
     return snowflake.connector.connect(
