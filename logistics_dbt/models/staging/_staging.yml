@@ -1,0 +1,100 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned customer dimension source data"
+    columns:
+      - name: customer_id
+        description: "Natural key - unique customer identifier"
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        tests:
+          - not_null
+      - name: last_name
+        tests:
+          - not_null
+      - name: email
+        description: "Customer email address"
+        tests:
+          - not_null
+
+  - name: stg_employees
+    description: "Cleaned employee dimension source data"
+    columns:
+      - name: employee_id
+        tests:
+          - unique
+          - not_null
+      - name: warehouse_id
+        tests:
+          - not_null
+
+  - name: stg_orders
+    description: "Cleaned order header source data"
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+      - name: employee_id
+        tests:
+          - not_null
+      - name: order_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Delivered', 'Pending', 'Cancelled']
+
+  - name: stg_products
+    description: "Cleaned product dimension source data"
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_order_items
+    description: "Cleaned order line item source data"
+    columns:
+      - name: order_item_id
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        tests:
+          - not_null
+      - name: product_id
+        tests:
+          - not_null
+
+  - name: stg_warehouses
+    description: "Cleaned warehouse dimension source data"
+    columns:
+      - name: warehouse_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_delivery_partners
+    description: "Cleaned delivery partner dimension source data"
+    columns:
+      - name: partner_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_gps_tracking
+    description: "Cleaned GPS tracking event source data"
+    columns:
+      - name: tracking_id
+        tests:
+          - unique
+          - not_null
+      - name: partner_id
+        tests:
+          - not_null

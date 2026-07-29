@@ -1,0 +1,210 @@
+version: 2
+
+models:
+  # ─────────────────────────────────────────────
+  #  DIMENSIONS
+  # ─────────────────────────────────────────────
+
+  - name: dim_customers
+    description: "SCD Type 1 - Customer dimension. Stores current customer attributes."
+    columns:
+      - name: customer_key
+        description: "Surrogate key (MD5 of customer_id)"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Natural key from source system"
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - not_null
+
+  - name: dim_products
+    description: "SCD Type 1 - Product dimension. Stores current product catalog attributes."
+    columns:
+      - name: product_key
+        description: "Surrogate key (MD5 of product_id)"
+        tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: "Natural key from source system"
+        tests:
+          - unique
+          - not_null
+      - name: cost_price
+        tests:
+          - not_null
+      - name: selling_price
+        tests:
+          - not_null
+
+  - name: dim_employees
+    description: "SCD Type 1 - Employee dimension. Stores current employee attributes."
+    columns:
+      - name: employee_key
+        description: "Surrogate key (MD5 of employee_id)"
+        tests:
+          - unique
+          - not_null
+      - name: employee_id
+        description: "Natural key from source system"
+        tests:
+          - unique
+          - not_null
+      - name: warehouse_key
+        description: "FK to dim_warehouses - warehouse where employee is assigned"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_warehouses')
+                field: warehouse_key
+
+  - name: dim_warehouses
+    description: "SCD Type 1 - Warehouse dimension. Stores current warehouse master data."
+    columns:
+      - name: warehouse_key
+        description: "Surrogate key (MD5 of warehouse_id)"
+        tests:
+          - unique
+          - not_null
+      - name: warehouse_id
+        description: "Natural key from source system"
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_delivery_partners
+    description: "SCD Type 1 - Delivery partner dimension. Stores current partner attributes."
+    columns:
+      - name: partner_key
+        description: "Surrogate key (MD5 of partner_id)"
+        tests:
+          - unique
+          - not_null
+      - name: partner_id
+        description: "Natural key from source system"
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_date
+    description: >
+      Conformed date dimension (Kimball). Generated date spine from
+      2020-01-01 to 2030-12-31. Used for all date-based filtering
+      and reporting across fact tables.
+    columns:
+      - name: date_key
+        description: "Integer key YYYYMMDD - join to all fact date foreign keys"
+        tests:
+          - unique
+          - not_null
+      - name: full_date
+        tests:
+          - unique
+          - not_null
+
+  # ─────────────────────────────────────────────
+  #  FACTS
+  # ─────────────────────────────────────────────
+
+  - name: fact_order_items
+    description: >
+      Transaction fact table. Grain: one row per order line item.
+      Contains all measures (quantity, revenue, margin) and foreign
+      keys to every dimension. This is the primary analysis table
+      for sales, product performance, and profitability reporting.
+    columns:
+      - name: order_item_key
+        description: "Surrogate primary key (MD5 of order_item_id)"
+        tests:
+          - unique
+          - not_null
+      - name: order_item_id
+        description: "Natural key from source system"
+        tests:
+          - not_null
+      - name: customer_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_key
+      - name: employee_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_employees')
+                field: employee_key
+      - name: product_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_products')
+                field: product_key
+      - name: warehouse_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_warehouses')
+                field: warehouse_key
+      - name: partner_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_delivery_partners')
+                field: partner_key
+      - name: order_date_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: quantity
+        tests:
+          - not_null
+      - name: line_amount
+        description: "quantity * unit_selling_price"
+        tests:
+          - not_null
+
+  - name: fact_gps_tracking
+    description: >
+      Transaction fact table. Grain: one row per GPS tracking event.
+      Records real-time location data for delivery partner fleet tracking.
+    columns:
+      - name: tracking_key
+        description: "Surrogate primary key (MD5 of tracking_id)"
+        tests:
+          - unique
+          - not_null
+      - name: partner_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_delivery_partners')
+                field: partner_key
+      - name: tracking_date_key
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: latitude
+        tests:
+          - not_null
+      - name: longitude
+        tests:
+          - not_null

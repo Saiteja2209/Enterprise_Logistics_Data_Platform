@@ -9,9 +9,9 @@ random.seed(42)
 Faker.seed(42)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR / "data"
+DATA_DIR = BASE_DIR / "data" / "raw"
 
-DATA_DIR.mkdir(exist_ok=True)
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 customers = []
 
@@ -110,6 +110,34 @@ warehouses_df.to_csv(
 
 print("warehouses.csv created successfully!")
 
+employees = []
+
+roles_departments = [
+    ("Warehouse Manager", "Operations"),
+    ("Warehouse Associate", "Operations"),
+    ("Delivery Coordinator", "Logistics"),
+    ("Inventory Specialist", "Inventory"),
+    ("Quality Inspector", "Quality"),
+]
+
+for employee_id in range(1, 6):
+    role, department = roles_departments[employee_id - 1]
+    employees.append({
+        "employee_id": employee_id,
+        "first_name": fake.first_name(),
+        "last_name": fake.last_name(),
+        "role": role,
+        "department": department,
+        "warehouse_id": random.randint(1, 20),
+        "phone": fake.phone_number(),
+        "email": fake.email()
+    })
+
+employees_df = pd.DataFrame(employees)
+employees_df.to_csv(DATA_DIR / "employees.csv", index=False)
+
+print("employees.csv created successfully!")
+
 vehicle_types = [
     "Bike",
     "Scooter",
@@ -186,6 +214,7 @@ for order_id in range(1, 10001):
     orders.append({
         "order_id": order_id,
         "customer_id": customer_id,
+        "employee_id": random.randint(1, 5),
         "warehouse_id": warehouse_id,
         "partner_id": partner_id,
         "order_date": order_date,

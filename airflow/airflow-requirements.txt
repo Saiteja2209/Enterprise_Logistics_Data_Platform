@@ -1,0 +1,13 @@
+snowflake-connector-python==3.13.1
+snowflake-sqlalchemy==1.6.1
+
+python-dotenv==1.0.1
+requests==2.32.3
+
+apache-airflow-providers-snowflake
+
+# dbt-core==1.9.7 has a protobuf dependency conflict with
+# Airflow's bundled opentelemetry-proto (protobuf 5.x vs <5.0).
+# Uncomment and pin compatible versions when resolved:
+# dbt-core==1.9.7
+# dbt-snowflake==1.9.2

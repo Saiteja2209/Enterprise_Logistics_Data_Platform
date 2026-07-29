@@ -94,3 +94,10 @@ dmypy.json
 logs/*.log
 data/*
 !data/.gitkeep
+
+# Airflow
+airflow/dags/
+airflow/logs/
+airflow/plugins/
+airflow/postgres-db-volume/
+airflow/airflow_env/

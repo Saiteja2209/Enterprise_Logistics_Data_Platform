@@ -1,0 +1,6 @@
+employee_id,first_name,last_name,role,department,warehouse_id,phone,email
+1,Jasmit,Raju,Warehouse Manager,Operations,16,+915470554912,pillaygabriel@example.com
+2,Amrita,Bora,Warehouse Associate,Operations,4,+919556409196,ekaniseshadri@example.net
+3,Watika,Parmar,Delivery Coordinator,Logistics,5,+910702042620,tanejagopal@example.org
+4,Gaurav,Doctor,Inventory Specialist,Inventory,1,01393696789,cravi@example.net
+5,Urvi,Kale,Quality Inspector,Quality,18,+912677319227,dbala@example.com

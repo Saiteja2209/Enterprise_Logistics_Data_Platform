@@ -1,0 +1,16 @@
+// ============================================================
+// Power BI - Table Relationships
+// Create these in Model View after importing all 8 tables
+// All relationships are Many-to-One (*:1) from Fact to Dimension
+// ============================================================
+
+// 1. FACT_ORDER_ITEMS.CUSTOMER_KEY       → DIM_CUSTOMERS.CUSTOMER_KEY
+// 2. FACT_ORDER_ITEMS.EMPLOYEE_KEY       → DIM_EMPLOYEES.EMPLOYEE_KEY
+// 3. FACT_ORDER_ITEMS.PRODUCT_KEY        → DIM_PRODUCTS.PRODUCT_KEY
+// 4. FACT_ORDER_ITEMS.WAREHOUSE_KEY      → DIM_WAREHOUSES.WAREHOUSE_KEY
+// 5. FACT_ORDER_ITEMS.PARTNER_KEY        → DIM_DELIVERY_PARTNERS.PARTNER_KEY
+// 6. FACT_ORDER_ITEMS.ORDER_DATE_KEY     → DIM_DATE.DATE_KEY
+// 7. FACT_ORDER_ITEMS.DELIVERY_DATE_KEY  → DIM_DATE.DATE_KEY
+// 8. FACT_GPS_TRACKING.PARTNER_KEY       → DIM_DELIVERY_PARTNERS.PARTNER_KEY
+// 9. FACT_GPS_TRACKING.TRACKING_DATE_KEY → DIM_DATE.DATE_KEY
+// 10. DIM_EMPLOYEES.WAREHOUSE_KEY        → DIM_WAREHOUSES.WAREHOUSE_KEY

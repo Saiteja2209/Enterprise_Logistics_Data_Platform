@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: raw
+    database: LOGISTICS_DW
+    schema: RAW
+
+    tables:
+      - name: customers
+        description: "Raw customer data from ETL pipeline"
+      - name: employees
+        description: "Raw employee data from ETL pipeline"
+      - name: orders
+        description: "Raw order header data from ETL pipeline"
+      - name: products
+        description: "Raw product catalog from ETL pipeline"
+      - name: order_items
+        description: "Raw order line items from ETL pipeline"
+      - name: warehouses
+        description: "Raw warehouse master data from ETL pipeline"
+      - name: delivery_partners
+        description: "Raw delivery partner data from ETL pipeline"
+      - name: gps_tracking
+        description: "Raw GPS tracking events from ETL pipeline"
